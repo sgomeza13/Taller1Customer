@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<h1>Confirma tus datos</h1>
+<hr>
+<div class="col-md-8">
+    <div class="card-body">
+        <h3 class="card-title">Nombre:</h3>
+        <p class="fst-normal">{{data.first_name}} {{data.last_name}}</p>
 
-<h1>Customer {{data.email}} creado correctamente</h1>
+
+        <h5 class="fw-bold">Correo Electronico: </h5>
+        <p class="fst-normal">{{data.email}}</p>
+
+        <h5 class="fw-bold">Dirección de vivienda:</h5>
+        <p class="fst-normal">{{data.address}}</p>
+
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Repetir Formulario" />   
+        </form>
+    </div>
+
+</div>
 
 {%endblock%}

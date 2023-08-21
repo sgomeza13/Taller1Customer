@@ -3,6 +3,7 @@ from django import forms
 from .models import CustomerUser
 
 class CustomerForm(forms.ModelForm):
+
     class Meta:
         model = CustomerUser
         fields = ['email', 'password', 'first_name','last_name', 'address']
@@ -16,8 +17,10 @@ class CustomerForm(forms.ModelForm):
         elif(password.lower()==password):
             raise forms.ValidationError("Contraseña: Minimo 1 caracter con mayusculas")
         elif(not(any(i.isdigit() for i in password))):
-            raise forms.ValidationError("Contraseña: Minimo 1 digito")
-        return password        
+            raise forms.ValidationError("Contraseña: Minimo 1 numero")
+            
+        return password
+      
 
         
 

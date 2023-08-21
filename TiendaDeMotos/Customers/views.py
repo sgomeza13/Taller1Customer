@@ -10,13 +10,9 @@ from .models import CustomerUser
 class CustomerHomeView(TemplateView):
     template_name = "home.html"
     
-class CreatedCustomer(TemplateView):
-    template_name = 'customer/created.html'
-    def get(self,request, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['data'] =kwargs
-        return render(request,self.template_name,context)
-
+class error(TemplateView):
+    template_name = "error.html"
+    
 class RegisterView(CreateView):
     template_name = 'customer/register.html'
 
@@ -28,10 +24,10 @@ class RegisterView(CreateView):
     def post(self, request):
         form = CustomerForm(request.POST)
         viewData = {}
-        viewData["form"] = form.data
-        print(form.data)
+        viewData['form'] = form.data
+        print(viewData['form'])
         if(form.is_valid()):
-            form.save()
+            form.save(commit=True)
             return redirect(reverse('created',kwargs={"email":form.data['email']}))
         else:
             viewErrors = {
@@ -63,3 +59,24 @@ class CustomerView(View):
         customer = get_object_or_404(CustomerUser, pk=id)
         customer.delete()
         return redirect('list')
+
+class CreatedCustomerView(View):
+    template_name = 'customer/created.html'
+    def get(self,request, email):
+        viewData = {}
+        try:
+            print(email)
+            user = get_object_or_404(CustomerUser, email=email)
+            viewData['data'] = user
+            print(viewData)
+            return render(request,self.template_name,viewData)
+        except:
+            return redirect('error')
+    def post(self,request,email):
+        print(email)
+        try:
+            user = get_object_or_404(CustomerUser, email=email)
+            user.delete()
+            return redirect('register')
+        except:
+            return redirect('error')
