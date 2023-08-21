@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="{% static 'customers/icono.svg' %}"
+                class="img-fluid rounded-start">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h3 class="card-title">Nombre:</h3>
+                <p class="fst-normal">{{customer.first_name}} {{customer.last_name}}</p>
+
+
+                <h5 class="fw-bold">Correo Electronico: </h5>
+                <p class="fst-normal">{{customer.email}}</p>
+
+                <h5 class="fw-bold">Dirección de vivienda:</h5>
+                <p class="fst-normal">{{customer.address}}</p>
+
+
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-danger" value="Eliminar Usuario" />   
+</form>
+{% endblock %}

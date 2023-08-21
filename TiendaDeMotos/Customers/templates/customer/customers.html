@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    {% for customer in users %}
+    <div class="col-md-4 col-lg-3 mb-2">
+    <div class="card">
+    <img src="{% static 'customers/icono.svg' %}" class="card-img-top img-card">
+    <div class="card-body text-center">
+    <a href="{% url 'customer' id=customer.id  %}"
+    class="btn bg-primary text-white">{{customer.id}}: {{customer.email}}</a>
+    
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+{%endblock%}
