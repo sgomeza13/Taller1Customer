@@ -7,6 +7,15 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model = CustomerUser
         fields = ['email', 'password', 'first_name','last_name', 'address']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data.get('password')  # Assuming you have a password field in your form
+        if password:
+            user.set_password(password)  # Hash the password
+        if commit:
+            user.save()
+        return user    
     
     def clean_password(self):
         password = self.cleaned_data['password']
@@ -21,12 +30,16 @@ class CustomerForm(forms.ModelForm):
             
         return password
       
+class LoginForm(forms.ModelForm):
 
+    def clen_email(self):
+        email = forms.EmailField(required=True)
+        return email
         
 
 class CustomerChangeForm(forms.ModelForm):
     class Meta:
         model = CustomerUser
-        fields = ('email','password','address')
+        fields =['email', 'password', 'first_name','last_name', 'address']
 
 

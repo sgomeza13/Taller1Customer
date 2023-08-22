@@ -126,3 +126,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "Customers.CustomerUser"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', # This is the default that allows us to log in via username
+    'Customers.authentication_backends.EmailAuthBackend'
+]

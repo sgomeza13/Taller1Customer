@@ -18,7 +18,9 @@
 
         <form method="POST">
             {% csrf_token %}
-            <input type="submit" class="btn btn-danger" value="Repetir Formulario" />   
+            <input type="submit" class="btn btn-primary" name='confirm' value="Confirmar" /> 
+            <input type="submit" class="btn btn-danger" name='repeat_form' value="Repetir Formulario" />
+              
         </form>
     </div>
 

@@ -2,7 +2,8 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import TemplateView, ListView, View
 from django.views.generic.edit import CreateView
-from .forms import CustomerForm
+from django.contrib.auth import login, logout, authenticate
+from .forms import CustomerForm, LoginForm
 from .models import CustomerUser
 # Create your views here.
 
@@ -34,6 +35,22 @@ class RegisterView(CreateView):
                 'form':form
             }
             return render(request, self.template_name, viewErrors)
+        
+class LoginView(View):
+    template_name = 'customer/login.html'
+    def get(self,request):
+        return render(request,self.template_name)
+    def post(self,request):
+        #form = LoginView(request.POST)
+        #viewData = {'form':form.data}
+        user = authenticate(request,username=request.POST['email'],password=request.POST['password'])
+        print(user)
+        if(user != None):
+            login(request, user)
+            return redirect('home')
+        else:  
+            return render(request,self.template_name)#,viewData)
+        
         
 class CustomerListView(ListView):
     model = CustomerUser
@@ -74,9 +91,14 @@ class CreatedCustomerView(View):
             return redirect('error')
     def post(self,request,email):
         print(email)
-        try:
-            user = get_object_or_404(CustomerUser, email=email)
-            user.delete()
-            return redirect('register')
-        except:
-            return redirect('error')
+        if('repeat_form' in request.POST):
+            try:
+                user = get_object_or_404(CustomerUser, email=email)
+                user.delete()
+                return redirect('register')
+            except:
+                return redirect('error')
+        else:
+            return redirect('list')
+        
+        
